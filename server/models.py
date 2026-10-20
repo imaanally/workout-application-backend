@@ -22,9 +22,16 @@ class Exercise(db.Model):
         cascade="all, delete-orphan"
     )
 
+    workouts = db.relationship(
+        "Workout",
+        secondary="workout_exercises",
+        viewonly=True,
+        back_populates="exercises"
+    )
+
     __table_args__ = (
-        CheckConstraint("length(trim(name)) > 0", name="check_exercise_name"),
-        CheckConstraint("length(trim(category)) > 0", name="check_exercise_category"),
+        CheckConstraint("length(name) > 0", name="check_exercise_name"),
+        CheckConstraint("length(category) > 0", name="check_exercise_category"),
     )
 
     @validates("name", "category")
@@ -46,6 +53,13 @@ class Workout(db.Model):
         "WorkoutExercise",
         back_populates="workout",
         cascade="all, delete-orphan"
+    )
+
+    exercises = db.relationship(
+        "Exercise",
+        secondary="workout_exercises",
+        viewonly=True,
+        back_populates="workouts"
     )
 
     __table_args__ = (
