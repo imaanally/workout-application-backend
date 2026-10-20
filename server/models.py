@@ -23,8 +23,8 @@ class Exercise(db.Model):
     )
 
     __table_args__ = (
-        CheckConstraint("length(name) > 0", name="check_exercise_name"),
-        CheckConstraint("length(category) > 0", name="check_exercise_category"),
+        CheckConstraint("length(trim(name)) > 0", name="check_exercise_name"),
+        CheckConstraint("length(trim(category)) > 0", name="check_exercise_category"),
     )
 
     @validates("name", "category")
